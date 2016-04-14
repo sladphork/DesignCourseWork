@@ -1,4 +1,3 @@
-# hello-world
-Just the hello world repository.
+# Design Course Work
 
-This is the read me edits for for the tutorial.  I will be removed or edited soon enough.
+This repository will contain the code and other files related to work related design course.
