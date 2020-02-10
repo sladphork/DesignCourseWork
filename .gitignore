@@ -1,0 +1,7 @@
+**/*.iml
+/.idea
+/target
+/target/**
+**/data
+/ui/node_modules
+.DS_Store
