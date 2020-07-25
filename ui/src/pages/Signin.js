@@ -1,31 +1,31 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from 'axios';
-//import logoImg from "../img/logo.jpg";
-import { Card, Logo, Form, Input, Button, Error } from "../components/AuthForm";
-import { useAuth } from "../context/auth";
+import { Card, Logo, Form, Input, Button, Error } from "../components/FormStyles";
+import { useAuth } from "../context/Authentication";
+import { Token } from "../context/Token"
+import { requestSignin } from "../context/IamRequests"
 
-function Login() {
+function Signin() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { setAuthTokens } = useAuth();
 
-  function postLogin() {
-    axios.post("https://www.somePlace.com/auth/login", {
-      userName,
-      password
-    }).then(result => {
-      if (result.status === 200) {
-        setAuthTokens(result.data);
-        setLoggedIn(true);
-      } else {
-        setIsError(true);
-      }
-    }).catch(e => {
-      setIsError(true);
-    });
+  function setToken(token) {
+    setAuthTokens(token)
+    setLoggedIn(true)
+  }
+
+  function setError() {
+    setUsername("")
+    setPassword("")
+    setIsError(true)
+  }
+
+  function signin() {
+    requestSignin(username, password, setToken, setError)
   }
 
   if (isLoggedIn) {
@@ -40,9 +40,9 @@ function Login() {
       <Form>
         <Input
           type="username"
-          value={userName}
+          value={username}
           onChange={e => {
-            setUserName(e.target.value);
+            setUsername(e.target.value);
           }}
           placeholder="username"
         />
@@ -54,11 +54,11 @@ function Login() {
           }}
           placeholder="password"
         />
-        <Button onClick={postLogin}>Sign In</Button>
+        <Button onClick={signin}>Sign In</Button>
       </Form>
-        { isError &&<Error>The username or password provided were incorrect!</Error> }
+        { isError &&<Error>The username and/or password provided were incorrect!</Error> }
     </Card>
   );
 }
 
-export default Login;
+export default Signin;

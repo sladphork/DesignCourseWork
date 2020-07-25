@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 //import logoImg from "../img/logo.jpg";
-import { Card, Logo, Form, Input, Button } from '../components/AuthForm';
+import { Card, Logo, Form, Input, Button } from '../components/FormStyles';
 
 // This can be the first line after <Card>
 //<Logo src={logoImg} />

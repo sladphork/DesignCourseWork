@@ -1,0 +1,79 @@
+[
+  {
+    "id": "15ce42f2-ae64-45af-8ed3-4832f24d577b",
+    "first_name": "Test",
+    "last_name": "Registrar",
+    "email": "testr0@wc.edu",
+    "username": "testr"
+  },
+  {
+    "id": "88db9898-b856-4e38-adfa-829de5a1c3dd",
+    "first_name": "Sibyl",
+    "last_name": "Bateup",
+    "email": "sbateup0@issuu.com",
+    "username": "sbateup0"
+  },
+  {
+    "id": "982ac3d4-035f-4bd3-9b30-70b25c13f121",
+    "first_name": "Joscelin",
+    "last_name": "Stebbing",
+    "email": "jstebbing1@flickr.com",
+    "username": "jstebbing1"
+  },
+  {
+    "id": "221e08cf-ecd6-4a9a-8aa8-2c24faaff5a2",
+    "first_name": "Byrle",
+    "last_name": "Bendle",
+    "email": "bbendle2@plala.or.jp",
+    "username": "bbendle2"
+  },
+  {
+    "id": "9f0c416d-6a92-498c-a3e6-38e8a08d312c",
+    "first_name": "Shawnee",
+    "last_name": "Vaney",
+    "email": "svaney3@zdnet.com",
+    "username": "svaney3"
+  },
+  {
+    "id": "c1ec7255-2b7c-4601-b9a5-8b52aa730434",
+    "first_name": "Efrem",
+    "last_name": "Paulitschke",
+    "email": "epaulitschke4@amazon.co.uk",
+    "username": "epaulitschke4"
+  },
+  {
+    "id": "e13c3bc1-145a-424e-b7d2-c38b55c4ccbc",
+    "first_name": "Darcee",
+    "last_name": "O'Neal",
+    "email": "doneal5@biblegateway.com",
+    "username": "doneal5"
+  },
+  {
+    "id": "e2f7220e-673d-40ea-858f-2a1e52d9855d",
+    "first_name": "Tessi",
+    "last_name": "Riolfi",
+    "email": "triolfi6@cloudflare.com",
+    "username": "triolfi6"
+  },
+  {
+    "id": "0c62a222-1bb6-4f18-ab0d-2b1da70b6a2f",
+    "first_name": "Damaris",
+    "last_name": "Billitteri",
+    "email": "dbillitteri7@163.com",
+    "username": "dbillitteri7"
+  },
+  {
+    "id": "3a51a231-997d-4023-ab3f-04051f57ba35",
+    "first_name": "Gypsy",
+    "last_name": "Bresnahan",
+    "email": "gbresnahan8@oakley.com",
+    "username": "gbresnahan8"
+  },
+  {
+    "id": "04c5d3eb-c234-4d1c-a00a-0801b8050f20",
+    "first_name": "Ami",
+    "last_name": "Giacobbo",
+    "email": "agiacobbo9@istockphoto.com",
+    "username": "agiacobbo9"
+  }
+]
