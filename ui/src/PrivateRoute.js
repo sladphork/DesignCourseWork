@@ -1,7 +1,9 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useAuth } from "./context/auth";
+import { useAuth } from "./context/Authentication";
 
+// TODO: I think we'll rename the auth stuff to session or something.
+//  This way we can make it a bit smarter.
 function PrivateRoute({ component: Component, ...rest }) {
   const { authTokens } = useAuth();
 
@@ -12,7 +14,7 @@ function PrivateRoute({ component: Component, ...rest }) {
         authTokens ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/login" />
+          <Redirect to="/signin" />
         )
       }
     />
