@@ -21,4 +21,4 @@ jobs:
       with:
         java-version: 1.11
     - name: Build IAM with Maven
-      run: mvn -B compile test package --file services/iam/pom.xml
+      run: mvn -B package --file services/iam/pom.xml
