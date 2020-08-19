@@ -8,7 +8,7 @@ import java.util.Base64;
 
 final class SigninResponseBuilder {
     static SigninResponseBuilder newBuilder() {
-        return new SigninResponseBuilder("application/vnd.wc.iam.v1+json");
+        return new SigninResponseBuilder("application/vnd.wc.v1+json");
     }
 
     private final String contentType;

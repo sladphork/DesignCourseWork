@@ -5,6 +5,7 @@ import org.takes.facets.fork.FkMethods;
 import org.takes.facets.fork.FkRegex;
 import org.takes.facets.fork.Fork;
 import org.takes.facets.fork.TkFork;
+import org.takes.rs.RsText;
 import org.takes.tk.TkCors;
 import org.takes.tk.TkSlf4j;
 import robhopkins.wc.iam.signin.SigninSheet;
@@ -25,6 +26,7 @@ public final class REST {
         return new TkSlf4j(
             new TkCors(
                 new TkFork(
+                    canary(),
                     signin(),
                     signout(),
                     token()
@@ -36,6 +38,13 @@ public final class REST {
         );
     }
 
+    private Fork canary() {
+        return new FkRegex("/canary",
+            new TkFork(
+                new FkMethods("GET", new RsText("Canary!"))
+            )
+        );
+    }
     private Fork token() {
         return new FkRegex("/iam/token",
             new TkFork(

@@ -20,7 +20,14 @@ public final class Main {
 
         new FtBasic(
             REST.create(SigninSheet.newSheet()).toTake(),
-            8080
+            port(args)
         ).start(Exit.NEVER);
+    }
+
+    private static int port(final String... args) {
+        // TODO: Make this less of a hack.
+        return args.length == 0
+            ? 8080
+            : Integer.parseInt(args[0]);
     }
 }

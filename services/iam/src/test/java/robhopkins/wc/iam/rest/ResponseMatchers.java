@@ -16,15 +16,15 @@ final class ResponseMatchers {
     }
 
     static Matcher<Response> isOkResponse() {
-        return new ContentMatcher("HTTP/1.1 200 OK", "Content-Type: application/vnd.wc.iam.v1+json");
+        return new ContentMatcher("HTTP/1.1 200 OK", "Content-Type: application/vnd.wc.v1+json");
     }
 
     static Matcher<Response> isBadResponse() {
-        return new ContentMatcher("HTTP/1.1 400 Bad Request", "Content-Type: application/vnd.wc.iam.error.v1+json");
+        return new ContentMatcher("HTTP/1.1 400 Bad Request", "Content-Type: application/vnd.wc.error.v1+json");
     }
 
     static Matcher<Response> isUnauthorizedResponse() {
-        return new ContentMatcher("HTTP/1.1 401 Unauthorized", "Content-Type: application/vnd.wc.iam.error.v1+json");
+        return new ContentMatcher("HTTP/1.1 401 Unauthorized", "Content-Type: application/vnd.wc.error.v1+json");
     }
 
     private static final class ContentMatcher extends BaseMatcher<Response> {
