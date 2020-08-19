@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 public abstract class FormData {
 
     private static final Pattern MULTIPART = Pattern.compile("(multipart/form-data(; boundary=.*)?)");
-    private static final Pattern URL_ENCODED = Pattern.compile("(application/x-www-form-urlencoded(; boundary=.*)?)");
+    private static final Pattern URL_ENCODED = Pattern.compile("(application/x-www-form-urlencoded).*");//(; boundary=.*)?)");
 
     private static final Map<Pattern, BiFunction<Request, String[], FormData>> BUILDERS = Map.of(
         MULTIPART, (req, schema) -> new MultipartForm(req, schema),

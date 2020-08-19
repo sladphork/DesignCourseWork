@@ -17,6 +17,9 @@ final class TokenRequest implements Take {
     @Override
     public Response act(final Request req) throws IOException {
         // TODO: Get the token out and check if valid.
-        return null;
+        return ErrorResponseBuilder.newBuilder()
+            .withStatus(501)
+            .withMessage("Not Implemented")
+            .build();
     }
 }

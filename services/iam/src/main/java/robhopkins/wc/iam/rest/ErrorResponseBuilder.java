@@ -7,7 +7,7 @@ import java.util.Optional;
 public final class ErrorResponseBuilder {
 
     public static ErrorResponseBuilder newBuilder() {
-        return new ErrorResponseBuilder("application/vnd.wc.iam.error.v1+json");
+        return new ErrorResponseBuilder("application/vnd.wc.error.v1+json");
     }
 
     private final String contentType;

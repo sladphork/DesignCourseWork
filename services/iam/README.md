@@ -4,7 +4,7 @@ This is the service responsible for authorization and authentication.
 ## Endpoints
 * POST /signin -> Authorization: Basic [Base64]
 * POST /signout -> Authorization: Bearer [Token]
-* POST /token -> Authorization: Bearer [Token]
+* POST /token -> Authorization: Bearer [Token] (Not implemented)
 
 ### POST /signin
 This is used to signin (login) the user using the Basic Authorization scheme.
@@ -24,10 +24,10 @@ Responses:
   "token": [Token]
 }
 ```
-* **403**
+* **401**
 ```json
 {
-  "message": "User is not allowed!"
+  "message": "User is not authorized"
 }
 ``` 
 
