@@ -1,30 +1,49 @@
-# wc.iam project
+# IAM
+This is the service responsible for authorization and authentication.
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## Endpoints
+* POST /signin -> Authorization: Basic [Base64]
+* POST /signout -> Authorization: Bearer [Token]
+* POST /token -> Authorization: Bearer [Token] (Not implemented)
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+### POST /signin
+This is used to signin (login) the user using the Basic Authorization scheme.
 
-## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
+The value of the header can be:
+```text
+Basic username:password 
+or
+Basic dXNlcm5hbWU6cGFzc3dvcmQ= (Base64)
 ```
-./mvnw quarkus:dev
+
+Responses:
+* **200**
+```json
+{
+  "user": [user id],
+  "token": [Token]
+}
 ```
+* **401**
+```json
+{
+  "message": "User is not authorized"
+}
+``` 
 
-## Packaging and running the application
+This is only demo so this is not quite ready for production.
+### Token
+The token that is used by the system for authorization.
+This token is only used for demo purposes and should not be used in a
+production environment.  It is inspired by [JWT](https://jwt.io/)
 
-The application can be packaged using `./mvnw package`.
-It produces the `wc.iam-1.0.0-SNAPSHOT-runner.jar` file in the `/target` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
-
-The application is now runnable using `java -jar target/wc.iam-1.0.0-SNAPSHOT-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: `./mvnw package -Pnative`.
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: `./mvnw package -Pnative -Dquarkus.native.container-build=true`.
-
-You can then execute your native executable with: `./target/wc.iam-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image.
+Format:
+```json
+{
+  "iss": "Wylie College",
+  "sub": [username],
+  "name": [user's name],
+  "role": [student, registrar, professor],
+  "exp": [ISO 8601 timestamp]
+}
+```
