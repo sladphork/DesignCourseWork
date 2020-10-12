@@ -1,8 +1,0 @@
-**/*.iml
-/.idea
-/target
-/target/**
-**/data
-/ui/node_modules
-/ui/build
-.DS_Store
