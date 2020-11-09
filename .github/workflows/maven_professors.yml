@@ -20,5 +20,5 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.11
-    - name: Build IAM with Maven
+    - name: Build Professors with Maven
       run: mvn -B package --file services/wc.professors/pom.xml
