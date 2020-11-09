@@ -62,13 +62,13 @@
                 <artifactId>quarkus-maven-plugin</artifactId>
                 <version>${quarkus-plugin.version}</version>
                 <executions>
-                    <operation>
+                    <execution>
                         <goals>
+                            <goal>build</goal>
                             <goal>generate-code</goal>
                             <goal>generate-code-tests</goal>
-                            <goal>build</goal>
                         </goals>
-                    </operation>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -101,7 +101,7 @@
                         <artifactId>maven-failsafe-plugin</artifactId>
                         <version>${surefire-plugin.version}</version>
                         <executions>
-                            <operation>
+                            <execution>
                                 <goals>
                                     <goal>integration-test</goal>
                                     <goal>verify</goal>
@@ -116,7 +116,7 @@
                                         <maven.home>${maven.home}</maven.home>
                                     </systemPropertyVariables>
                                 </configuration>
-                            </operation>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
