@@ -1,4 +1,5 @@
 # Services
 
-## [IAM](iam/README.md)
-## [Database](db/README.md)
+## [IAM](wc.iam/README.md)
+## [Professors](wc.professors/README.md)
+## [Database](wc.database/README.md)
