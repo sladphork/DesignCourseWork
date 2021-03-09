@@ -31,6 +31,16 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20180813</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>2.3.4</version>
+    </dependency>
+    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-config-yaml</artifactId>
     </dependency>
@@ -48,6 +58,10 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
@@ -56,6 +70,16 @@
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.8.0</version>
+      <scope>test</scope>
+    </dependency>
+
+
   </dependencies>
   <build>
     <plugins>
@@ -64,13 +88,13 @@
         <artifactId>quarkus-maven-plugin</artifactId>
         <version>${quarkus-plugin.version}</version>
         <executions>
-          <operation>
+          <execution>
             <goals>
               <goal>build</goal>
               <goal>generate-code</goal>
               <goal>generate-code-tests</goal>
             </goals>
-          </operation>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -103,7 +127,7 @@
             <artifactId>maven-failsafe-plugin</artifactId>
             <version>${surefire-plugin.version}</version>
             <executions>
-              <operation>
+              <execution>
                 <goals>
                   <goal>integration-test</goal>
                   <goal>verify</goal>
@@ -115,7 +139,7 @@
                     <maven.home>${maven.home}</maven.home>
                   </systemPropertyVariables>
                 </configuration>
-              </operation>
+              </execution>
             </executions>
           </plugin>
         </plugins>

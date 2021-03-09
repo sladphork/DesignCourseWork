@@ -8,6 +8,7 @@ import robhopkins.wc.professors.exception.ProfessorNotFoundException;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Collection;
+import java.util.Map;
 
 @ApplicationScoped
 public final class RequestProfessors implements Professors {
@@ -16,6 +17,11 @@ public final class RequestProfessors implements Professors {
 
     public RequestProfessors() {
         target = ProfessorsFactory.newFactory().create();
+    }
+
+    @Override
+    public void configure(final Map<String, Object> properties) {
+        target.configure(properties);
     }
 
     @Override

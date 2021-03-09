@@ -40,7 +40,7 @@ final class GetByIdTest {
                 .withFirstName("Test")
                 .withLastName("Professor")
                 .withId(ObjectId.from(TEST_ID))
-                .withFacultyId(ObjectId.from("12345"))
+                .withDepartmentId(ObjectId.from("12345"))
                 .build()
         );
     }
@@ -96,7 +96,7 @@ final class GetByIdTest {
                 final JSONObject json = new JSONObject((String)o);
                 return "Test".equals(json.getString("firstName"))
                     && "Professor".equals(json.getString("lastName"))
-                    && "12345".equals(json.getString("facultyId"))
+                    && "12345".equals(json.getString("departmentId"))
                     && TEST_ID.equals(json.getString("id"));
             }
 

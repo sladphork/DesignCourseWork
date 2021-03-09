@@ -1,14 +1,13 @@
 package robhopkins.wc.iam.sheet;
 
 import robhopkins.wc.iam.request.exception.AuthenticationException;
+import robhopkins.wc.iam.user.Users;
 import robhopkins.wc.iam.user.UsersFactory;
 
 public interface SigninSheet {
 
-    static SigninSheet newSheet() {
-        return new DefaultSigninSheet(
-            UsersFactory.newFactory().create()
-        );
+    static SigninSheet newSheet(final Users users) {
+        return new DefaultSigninSheet(users);
     }
 
     Token signin(Credentials credentials) throws AuthenticationException;

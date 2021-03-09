@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import robhopkins.wc.professors.MockProfessors;
 import robhopkins.wc.professors.Professors;
 import robhopkins.wc.professors.faculty.Faculties;
+import robhopkins.wc.professors.faculty.exception.DepartmentNotFoundException;
 import robhopkins.wc.professors.faculty.exception.FacultyNotFoundException;
 import robhopkins.wc.professors.iam.IAM;
 
@@ -67,7 +68,7 @@ final class AddTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"firstName,lastName,facultyId", "firstName", "lastName", "facultyId"})
+    @ValueSource(strings = {"firstName,lastName,departmentId", "firstName", "lastName", "departmentId"})
     void requestShouldReturn400IfWithMissingFields(final String fields) {
         test(400,
             createBody(json -> removeFields(json, fields)),
@@ -77,7 +78,7 @@ final class AddTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"firstName", "lastName", "facultyId"})
+    @ValueSource(strings = {"firstName", "lastName", "departmentId"})
     void requestShouldReturn400IfWithEmptyFields(final String field) {
         test(400,
             createBody(json -> json.put(field, " ")),
@@ -87,12 +88,12 @@ final class AddTest {
     }
 
     @Test
-    void requestShouldReturn404IfFacultyIdNotFound() {
-        MockFaculties.throwNotFound(new FacultyNotFoundException("12345"));
+    void requestShouldReturn404IfDepartmentIdNotFound() {
+        MockFaculties.throwNotFound(new DepartmentNotFoundException("12345"));
         test(404,
             createBody(),
             "application/vnd.wc.error.v1+text",
-            containsString("Unable to find faculty: '12345'")
+            containsString("Unable to find department: '12345'")
         );
     }
 
@@ -111,7 +112,8 @@ final class AddTest {
                 final JSONObject json = new JSONObject((String)o);
                 return "Test".equals(json.getString("firstName"))
                     && "Professor".equals(json.getString("lastName"))
-                    && "12345".equals(json.getString("facultyId"))
+                    && "12345".equals(json.getString("departmentId"))
+                    && "Test.Professor@wc.edu".equalsIgnoreCase(json.getString("email"))
                     && json.has("id");
             }
 
@@ -157,7 +159,7 @@ final class AddTest {
             new JSONObject()
                 .put("firstName", "Test")
                 .put("lastName", "Professor")
-                .put("facultyId", "12345")
+                .put("departmentId", "12345")
             ).toString(2);
     }
 

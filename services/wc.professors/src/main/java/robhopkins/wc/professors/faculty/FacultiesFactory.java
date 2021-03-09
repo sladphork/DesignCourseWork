@@ -1,6 +1,7 @@
 package robhopkins.wc.professors.faculty;
 
 import robhopkins.wc.professors.domain.ObjectId;
+import robhopkins.wc.professors.faculty.exception.DepartmentNotFoundException;
 import robhopkins.wc.professors.faculty.exception.FacultyNotFoundException;
 
 public final class FacultiesFactory {
@@ -20,7 +21,12 @@ public final class FacultiesFactory {
         @Override
         public void check(final ObjectId facultyId) throws FacultyNotFoundException {
             // Do nothing, since we are good with anything.
-            // TODO: load the csv to map ids to names.
+            // TODO: Eventually add a call to the faculties service to check if exists.
+        }
+
+        @Override
+        public void checkDepartment(final ObjectId departmentId) throws DepartmentNotFoundException {
+
         }
     }
 }

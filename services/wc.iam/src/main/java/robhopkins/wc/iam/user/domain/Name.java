@@ -18,6 +18,14 @@ public final class Name {
         return String.format("%s %s", firstName, lastName);
     }
 
+    public String firstName() {
+        return firstName;
+    }
+
+    public String lastName() {
+        return lastName;
+    }
+
     @Override
     public boolean equals(final Object other) {
         if (this == other) return true;

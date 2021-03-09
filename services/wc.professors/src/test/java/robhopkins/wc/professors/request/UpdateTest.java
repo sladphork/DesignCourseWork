@@ -16,6 +16,7 @@ import robhopkins.wc.professors.ProfessorBuilder;
 import robhopkins.wc.professors.Professors;
 import robhopkins.wc.professors.domain.ObjectId;
 import robhopkins.wc.professors.faculty.Faculties;
+import robhopkins.wc.professors.faculty.exception.DepartmentNotFoundException;
 import robhopkins.wc.professors.faculty.exception.FacultyNotFoundException;
 import robhopkins.wc.professors.iam.IAM;
 
@@ -46,7 +47,7 @@ final class UpdateTest {
                 .withFirstName("Test")
                 .withLastName("Professor")
                 .withId(ObjectId.from(TEST_ID))
-                .withFacultyId(ObjectId.from("12345"))
+                .withDepartmentId(ObjectId.from("12345"))
                 .build()
         );
     }
@@ -79,7 +80,7 @@ final class UpdateTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"firstName,lastName,facultyId", "firstName", "lastName", "facultyId"})
+    @ValueSource(strings = {"firstName,lastName,departmentId", "firstName", "lastName", "departmentId"})
     void requestShouldReturn200IfWithMissingFields(final String fields) {
         test(200,
             createBody(json -> removeFields(json, fields)),
@@ -89,7 +90,7 @@ final class UpdateTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"firstName", "lastName", "facultyId"})
+    @ValueSource(strings = {"firstName", "lastName", "departmentId"})
     void requestShouldReturn200IfWithEmptyFields(final String field) {
         test(200,
             createBody(json -> json.put(field, " ")),
@@ -99,12 +100,12 @@ final class UpdateTest {
     }
 
     @Test
-    void requestShouldReturn404IfFacultyIdNotFound() {
-        MockFaculties.throwNotFound(new FacultyNotFoundException("12345"));
+    void requestShouldReturn404IfDepartmentIdNotFound() {
+        MockFaculties.throwNotFound(new DepartmentNotFoundException("12345"));
         test(404,
             createBody(),
             "application/vnd.wc.error.v1+text",
-            containsString("Unable to find faculty: '12345'")
+            containsString("Unable to find department: '12345'")
         );
     }
 
@@ -114,7 +115,7 @@ final class UpdateTest {
             createBody(
                 json -> json.put("firstName", "Update")
                     .put("lastName", "ToProfessor")
-                    .put("facultyId", "67890")
+                    .put("departmentId", "67890")
             ),
             "application/vnd.wc.v1+json",
             isExpectedProfessor("Update", "ToProfessor", "67890"));
@@ -127,7 +128,7 @@ final class UpdateTest {
                 final JSONObject json = new JSONObject((String)o);
                 return "Test".equals(json.getString("firstName"))
                     && "Professor".equals(json.getString("lastName"))
-                    && "12345".equals(json.getString("facultyId"))
+                    && "12345".equals(json.getString("departmentId"))
                     && TEST_ID.equals(json.getString("id"));
             }
 
@@ -138,14 +139,14 @@ final class UpdateTest {
         };
     }
 
-    private Matcher<?> isExpectedProfessor(final String firstName, final String lastName, final String facultyId) {
+    private Matcher<?> isExpectedProfessor(final String firstName, final String lastName, final String departmentId) {
         return new BaseMatcher<>() {
             @Override
             public boolean matches(final Object o) {
                 final JSONObject json = new JSONObject((String)o);
                 return firstName.equals(json.getString("firstName"))
                     && lastName.equals(json.getString("lastName"))
-                    && facultyId.equals(json.getString("facultyId"))
+                    && departmentId.equals(json.getString("departmentId"))
                     && TEST_ID.equals(json.getString("id"));
             }
 
@@ -176,7 +177,7 @@ final class UpdateTest {
             new JSONObject()
                 .put("firstName", "Test")
                 .put("lastName", "Professor")
-                .put("facultyId", "12345")
+                .put("departmentId", "12345")
             ).toString(2);
     }
 
