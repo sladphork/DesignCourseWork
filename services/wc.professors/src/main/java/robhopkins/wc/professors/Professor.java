@@ -10,6 +10,7 @@ public interface Professor {
         void firstName(String value);
         void lastName(String value);
         void id(ObjectId id);
-        void facultyId(ObjectId id);
+        void departmentId(ObjectId id);
+        void email(String value);
     }
 }

@@ -6,6 +6,7 @@ import robhopkins.wc.professors.exception.ProfessorException;
 import robhopkins.wc.professors.exception.ProfessorNotFoundException;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 
 @Mock
@@ -28,6 +29,11 @@ public final class MockProfessors implements Professors {
     public static void clear() {
         exception = null;
         target.clear();
+    }
+
+    @Override
+    public void configure(final Map<String, Object> properties) {
+
     }
 
     @Override

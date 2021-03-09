@@ -32,9 +32,14 @@ final class JsonPopulator implements Professor.ProfessorPopulator {
     }
 
     @Override
-    public void facultyId(final ObjectId id) {
+    public void departmentId(final ObjectId id) {
         // Temporary until we populate faculty
-        json.put("facultyId", Optional.ofNullable(id).map(ObjectId::toString).orElse(""));
+        json.put("departmentId", Optional.ofNullable(id).map(ObjectId::toString).orElse(""));
+    }
+
+    @Override
+    public void email(final String value) {
+        json.put("email", value);
     }
 
     @Override

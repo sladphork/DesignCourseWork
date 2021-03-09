@@ -1,5 +1,6 @@
 package robhopkins.wc.professors.request;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import robhopkins.wc.professors.Professor;
 import robhopkins.wc.professors.Professors;
 import robhopkins.wc.professors.domain.ObjectId;
@@ -13,10 +14,14 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Path("/professors")
 public final class ProfessorsEndpoints {
+
+    @ConfigProperty(name = "wc.db.url")
+    String dbUrl;
 
     private final IAM iam;
     private final Professors professors;
@@ -33,18 +38,23 @@ public final class ProfessorsEndpoints {
     public Response add(final String professor) {
         return execute(() -> {
             final AddProfessor toAdd = AddProfessor.from(professor);
-            faculties.check(toAdd.facultyId());
+            faculties.checkDepartment(toAdd.departmentId());
 
-            final Professor added = professors.add(toAdd.toProfessor());
-            try {
-                final URI location = new URI("/professors/" + added.id());
-                return Response.created(location)
-                    .entity(toJson(added));
-            } catch (URISyntaxException e) {
-                // TODO: Get rid of the try-catch and make this cleaner one it works.
-                throw new RuntimeException(e);
-            }
+            return addResponse(
+                professors.add(toAdd.toProfessor())
+            );
         });
+    }
+
+    private Response.ResponseBuilder addResponse(final Professor added) {
+        try {
+            final URI location = new URI(String.format("/professors/%s", added.id()));
+            return Response.created(location)
+                .entity(toJson(added));
+        } catch (URISyntaxException e) {
+            return Response.status(201)
+                .entity(added);
+        }
     }
 
     @GET
@@ -71,7 +81,7 @@ public final class ProfessorsEndpoints {
     public Response update(@PathParam("id") final String id, final String professor) {
         return execute(() -> {
             final UpdateProfessor update = UpdateProfessor.from(ObjectId.from(id), professor);
-            faculties.check(update.facultyId());
+            faculties.checkDepartment(update.departmentId());
             return Response.ok(
                 toJson(professors.update(update.toProfessor()))
             );
@@ -87,8 +97,8 @@ public final class ProfessorsEndpoints {
         });
     }
 
-    private String toJson(final Collection<Professor> toMap) {
-        return toMap.stream()
+    private String toJson(final Collection<Professor> professors) {
+        return professors.stream()
             .map(this::toJson)
             .collect(Collectors.joining(",", "[", "]"));
     }
@@ -98,6 +108,7 @@ public final class ProfessorsEndpoints {
     }
 
     private Response execute(final Operation operation) {
+        professors.configure(Map.of("dburl", dbUrl));
         try {
             iam.validate("registrar");
             return operation.run()

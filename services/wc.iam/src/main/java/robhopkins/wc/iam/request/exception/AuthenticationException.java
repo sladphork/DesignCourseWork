@@ -4,11 +4,15 @@ import robhopkins.wc.iam.user.domain.Username;
 
 public class AuthenticationException extends IAMException {
     public AuthenticationException(final Username username) {
-        super(String.format("Authentication failed for: '%s'", username));
+        this(String.format("Authentication failed for: '%s'", username));
+    }
+
+    public AuthenticationException(final String message) {
+        super(message);
     }
 
     @Override
-    protected int status() {
+    public int status() {
         return 401;
     }
 }

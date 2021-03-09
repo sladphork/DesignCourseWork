@@ -1,0 +1,120 @@
+[
+  {
+    "name": "Arts",
+    "id": "8a137ed8-7bd8-457c-873e-fd848bb1c231",
+    "departments": [
+      {
+        "name": "English",
+        "id": "706a2015-78a3-4130-8270-c52396151d70"
+      },
+      {
+        "name": "French",
+        "id": "9038ef54-c70c-4ba5-b9a9-b45e2712a93c"
+      },
+      {
+        "name": "Philosophy",
+        "id": "1c820fef-de8b-4673-9e91-8ce8816dbecc"
+      },
+      {
+        "name": "Performing Arts",
+        "id": "65f545c4-2740-47dd-adfa-7e3e6d9e64ea"
+      },
+      {
+        "name": "History",
+        "id": "c098c320-7995-403a-8535-82cafb3a18c5"
+      }
+    ]
+  },
+  {
+    "name": "Science",
+    "id": "0707a372-f3e9-4e0c-998a-49ef4f6124a8",
+    "departments": [
+      {
+        "name": "Physics",
+        "id": "d38f5a84-9672-4f8f-b52c-fe9ccc519e02"
+      },
+      {
+        "name": "Biology",
+        "id": "2fb01839-5e37-4e11-8ea0-fa135098f3a8"
+      },
+      {
+        "name": "Chemistry",
+        "id": "194fe471-ffbb-42c0-9c01-d5b21b5c4c78"
+      },
+      {
+        "name": "Mathematics",
+        "id": "547037e5-b8a0-4a93-bd92-0f653618fb96"
+      },
+      {
+        "name": "Oceanography",
+        "id": "1befa8df-a6ec-4b37-b0a5-1824ee54dea4"
+      }
+    ]
+  },
+  {
+    "name": "Business",
+    "id": "2ecbc675-f23e-47c2-aa0e-a49e3f1e8dba",
+    "departments": [
+      {
+        "name": "Commerce",
+        "id": "aa362618-732f-45c0-9c1d-8bc1d87283f9"
+      },
+      {
+        "name": "Economics",
+        "id": "94be8839-db9f-49d7-9efc-aba9c443df6e"
+      },
+      {
+        "name": "Management",
+        "id": "b4b01529-2e11-41d6-96f3-114543fc4f0a"
+      }
+    ]
+  },
+  {
+    "name": "Medicine",
+    "id": "31315f88-3fbc-4cf1-bcf0-6fa93c4d29cc",
+    "departments": [
+      {
+        "name": "Family Medicine",
+        "id": "df7656d5-ee95-4832-b6fd-60479cd25929"
+      },
+      {
+        "name": "Emergency Medicine",
+        "id": "89837bd7-a097-4982-858d-abff1ec9ed78"
+      },
+      {
+        "name": "Pathology",
+        "id": "5488e0b7-cb8a-440e-8b5c-39938aab21ab"
+      },
+      {
+        "name": "Psychiatry",
+        "id": "2460e8d8-c827-414a-92ad-13ef45eb31c3"
+      },
+      {
+        "name": "Surgery",
+        "id": "37f0f3b0-3169-40d3-b33c-f26cb9e3e87a"
+      }
+    ]
+  },
+  {
+    "name": "Engineering",
+    "id": "eca98da6-319c-4e8a-914d-0e6a87ef416b",
+    "departments": [
+      {
+        "name": "Civil & Resource Engineering",
+        "id": "0c09c217-73ce-44d9-b29b-87c89acc8a88"
+      },
+      {
+        "name": "Electrical & Computer Engineering",
+        "id": "3d0d1520-e870-448e-8d76-b6abf1e2cce3"
+      },
+      {
+        "name": "Industrial Engineering",
+        "id": "73941af2-0c70-4116-9f6c-033e8548c9bb"
+      },
+      {
+        "name": "Mechanical Engineering",
+        "id": "824b4d80-2bf9-440e-944e-8a52f576af7c"
+      }
+    ]
+  }
+]

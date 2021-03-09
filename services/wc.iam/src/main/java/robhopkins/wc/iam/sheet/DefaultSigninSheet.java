@@ -2,6 +2,7 @@ package robhopkins.wc.iam.sheet;
 
 import org.json.JSONObject;
 import robhopkins.wc.iam.request.exception.AuthenticationException;
+import robhopkins.wc.iam.request.exception.IAMException;
 import robhopkins.wc.iam.user.User;
 import robhopkins.wc.iam.user.Users;
 import robhopkins.wc.iam.user.domain.UserId;
@@ -30,6 +31,12 @@ final class DefaultSigninSheet implements SigninSheet {
             return newToken(authenticate(credentials));
         } catch (UserNotFoundException e) {
             throw new AuthenticationException(Username.from(credentials.username()));
+        } catch (IAMException e) {
+            // TODO: Figure out a better approach.  Make AuthenicationException its own type?
+            if (AuthenticationException.class.isInstance(e)) {
+                throw (AuthenticationException)e;
+            }
+            return Token.EMPTY;
         }
     }
 
@@ -42,10 +49,13 @@ final class DefaultSigninSheet implements SigninSheet {
 
     }
 
-    private User authenticate(final Credentials credentials) throws UserNotFoundException, AuthenticationException {
+    private User authenticate(final Credentials credentials)
+        throws UserNotFoundException, AuthenticationException, IAMException {
+
         final User user = users.get(Username.from(credentials.username()));
         user.authenticate(credentials.secret());
         return user;
+
     }
 
     private Token newToken(final User user) {

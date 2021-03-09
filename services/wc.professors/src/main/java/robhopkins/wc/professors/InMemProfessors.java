@@ -17,6 +17,11 @@ final class InMemProfessors implements Professors {
     }
 
     @Override
+    public void configure(final Map<String, Object> properties) {
+
+    }
+
+    @Override
     public Professor get(final ObjectId id) throws ProfessorNotFoundException {
         return Optional.ofNullable(data.get(id))
             .orElseThrow(() -> new ProfessorNotFoundException(id));
@@ -36,8 +41,8 @@ final class InMemProfessors implements Professors {
         final UpdateOperation operation =
             new UpdateOperation(
                 get(professor.id()
-                )
-            );
+            )
+        );
         final Professor updated = operation.update(professor);
         data.put(updated.id(), updated);
         return updated;
@@ -100,9 +105,16 @@ final class InMemProfessors implements Professors {
         }
 
         @Override
-        public void facultyId(final ObjectId id) {
+        public void departmentId(final ObjectId id) {
             if (doUpdate(id)) {
-                builder.withFacultyId(id);
+                builder.withDepartmentId(id);
+            }
+        }
+
+        @Override
+        public void email(String value) {
+            if (doUpdate(value)) {
+                builder.withEmail(value);
             }
         }
 

@@ -36,7 +36,7 @@ final class DeleteTest {
                 .withFirstName("Test")
                 .withLastName("Professor")
                 .withId(ObjectId.from(TEST_ID))
-                .withFacultyId(ObjectId.from("12345"))
+                .withDepartmentId(ObjectId.from("12345"))
                 .build()
         );
     }
@@ -73,7 +73,7 @@ final class DeleteTest {
                 .withFirstName("Test")
                 .withLastName("Professor")
                 .withId(ObjectId.from(TEST_ID))
-                .withFacultyId(ObjectId.from("12345"))
+                .withDepartmentId(ObjectId.from("12345"))
                 .build()
         );
 

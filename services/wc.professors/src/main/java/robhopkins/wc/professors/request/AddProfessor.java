@@ -11,7 +11,7 @@ public final class AddProfessor {
     public static AddProfessor from(final String json) throws ProfessorException {
         return Payload.newPayload(AddProfessor.class)
             .withJSON(new JSONObject(json))
-            .withSchema("firstName", "lastName", "facultyId")
+            .withSchema("firstName", "lastName", "departmentId")
             .build();
     }
 
@@ -21,15 +21,26 @@ public final class AddProfessor {
         this.json = json;
     }
 
-    public ObjectId facultyId() {
-        return ObjectId.from(json.getString("facultyId"));
+    public ObjectId departmentId() {
+        return ObjectId.from(json.getString("departmentId"));
     }
 
     public Professor toProfessor() {
         return ProfessorBuilder.newBuilder()
+            // TODO: Might not want to keep this here, but it's here for now.
+            //  Not sure the best approach, but this should work.
+            .withId(ObjectId.random())
             .withFirstName(json.getString("firstName"))
             .withLastName(json.getString("lastName"))
-            .withFacultyId(facultyId())
+            .withDepartmentId(departmentId())
+            .withEmail(generateEmail())
             .build();
+    }
+
+    private String generateEmail() {
+        return String.format("%s.%s@wc.edu",
+            json.getString("firstName"),
+            json.getString("lastName")
+        );
     }
 }

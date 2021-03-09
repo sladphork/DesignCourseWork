@@ -17,7 +17,6 @@ import robhopkins.wc.professors.faculty.Faculties;
 import robhopkins.wc.professors.iam.IAM;
 
 import java.util.Arrays;
-import java.util.stream.StreamSupport;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -77,7 +76,7 @@ final class GetAllTest {
                 .withFirstName("First")
                 .withLastName("Professor")
                 .withId(ObjectId.from("23456"))
-                .withFacultyId(ObjectId.from("12345"))
+                .withDepartmentId(ObjectId.from("12345"))
                 .build()
         );
         MockProfessors.put(
@@ -85,7 +84,7 @@ final class GetAllTest {
                 .withFirstName("Second")
                 .withLastName("Professor")
                 .withId(ObjectId.from("98765"))
-                .withFacultyId(ObjectId.from("12345"))
+                .withDepartmentId(ObjectId.from("12345"))
                 .build()
         );
 

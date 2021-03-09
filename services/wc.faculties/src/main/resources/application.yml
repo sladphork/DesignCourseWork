@@ -1,0 +1,7 @@
+wc:
+  db:
+    url: http://localhost:1969
+
+greeting:
+  message: "hello"
+  name: "quarkus"

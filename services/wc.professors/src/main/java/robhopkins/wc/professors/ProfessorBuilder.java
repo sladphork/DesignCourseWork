@@ -32,8 +32,9 @@ public final class ProfessorBuilder implements Professor {
 
     private String firstName;
     private String lastName;
+    private String email;
     private ObjectId id;
-    private ObjectId facultyId;
+    private ObjectId departmentId;
 
     private ProfessorBuilder() {
     }
@@ -53,8 +54,13 @@ public final class ProfessorBuilder implements Professor {
         return this;
     }
 
-    public ProfessorBuilder withFacultyId(final ObjectId facultyId) {
-        this.facultyId = facultyId;
+    public ProfessorBuilder withDepartmentId(final ObjectId departmentId) {
+        this.departmentId = departmentId;
+        return this;
+    }
+
+    public ProfessorBuilder withEmail(final String email) {
+        this.email = email;
         return this;
     }
 
@@ -65,10 +71,11 @@ public final class ProfessorBuilder implements Professor {
 
     @Override
     public void populate(final ProfessorPopulator populator) {
-        populator.facultyId(facultyId);
+        populator.departmentId(departmentId);
         populator.id(id);
         populator.firstName(firstName);
         populator.lastName(lastName);
+        populator.email(email);
     }
 
     public Professor build() {
@@ -99,8 +106,13 @@ public final class ProfessorBuilder implements Professor {
         }
 
         @Override
-        public void facultyId(final ObjectId id) {
-            builder.withFacultyId(id);
+        public void departmentId(final ObjectId id) {
+            builder.withDepartmentId(id);
+        }
+
+        @Override
+        public void email(final String value) {
+            builder.withEmail(value);
         }
     }
 }

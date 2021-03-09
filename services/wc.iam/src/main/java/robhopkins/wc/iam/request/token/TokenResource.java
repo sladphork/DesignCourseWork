@@ -20,7 +20,7 @@ public class TokenResource {
     }
 
     @POST
-    public Response signout() {
+    public Response check() {
         // TODO: Get the token from the context and then determine what we want
         //  to check.  Definitely check exp, user exists and logged in?
         //  We can ask the sheet if user is signed in?

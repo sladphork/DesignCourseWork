@@ -1,0 +1,18 @@
+[
+  {
+    "id": "bdbf912b-2d5e-4881-8422-9fcb1c90297c",
+    "firstName": "Test",
+    "lastName": "Professor",
+    "email": "Test.Professor@wc.edu",
+    "username": "tprofessor",
+    "role": "PROFESSOR"
+  },
+  {
+    "id": "15ce42f2-ae64-45af-8ed3-4832f24d577b",
+    "firstName": "Test",
+    "lastName": "Registrar",
+    "email": "Test.Registrar@wc.edu",
+    "username": "tregistrar",
+    "role": "REGISTRAR"
+  }
+]
