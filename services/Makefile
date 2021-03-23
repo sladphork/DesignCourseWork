@@ -14,7 +14,7 @@ iam: common
 
 professors: common
 	cd ./wc.professors; \
-	mvn clean package -DskipTests -Dquarkus.package.type=fast-jar
+	mvn clean package -Dquarkus.package.type=fast-jar -U
 
 faculties: common
 	cd ./wc.faculties; \
