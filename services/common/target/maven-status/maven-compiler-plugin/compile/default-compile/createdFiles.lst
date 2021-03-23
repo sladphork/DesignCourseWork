@@ -1,0 +1,16 @@
+robhopkins/wc/common/datasource/HttpDatasourceRequest.class
+robhopkins/wc/common/request/exception/InvalidBodyException.class
+robhopkins/wc/common/request/ErrorResponse$ErrorMessage.class
+robhopkins/wc/common/request/Payload$ServerException.class
+robhopkins/wc/common/request/ErrorResponse.class
+robhopkins/wc/common/iam/Token.class
+robhopkins/wc/common/datasource/QueryRequestBuilder.class
+robhopkins/wc/common/datasource/UpdateRequestBuilder.class
+robhopkins/wc/common/datasource/HttpDatasourceRequest$HttpDatasourceResponse.class
+robhopkins/wc/common/datasource/InsertRequestBuilder.class
+robhopkins/wc/common/datasource/DatasourceRequest.class
+robhopkins/wc/common/request/exception/RequestException.class
+robhopkins/wc/common/datasource/DatasourceRequestBuilder.class
+robhopkins/wc/common/datasource/DeleteRequestBuilder.class
+robhopkins/wc/common/request/Payload.class
+robhopkins/wc/common/datasource/DatasourceResponse.class

@@ -1,17 +1,8 @@
 quarkus:
-#  http:
-#    port: 8081
-
-#robhopkins.wc.professors.db.Datasource/mp-rest/url: http://wc-db:8080
-#robhopkins.wc.professors.db.Datasource/mp-rest/scope: javax.inject.Singleton
-#robhopkins.wc.professors.db.Datasource/mp-rest/hostnameVerifier: io.quarkus.restclient.NoopHostnameVerifier
+  http:
+    port: 8081
   log:
     level: INFO
-
 wc:
-  db:
+  datasource:
     url: http://localhost:1969
-
-greeting:
-  message: "hello"
-  name: "quarkus"

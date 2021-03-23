@@ -20,9 +20,6 @@ import java.util.stream.Collectors;
 @Path("/professors")
 public final class ProfessorsEndpoints {
 
-    @ConfigProperty(name = "wc.db.url")
-    String dbUrl;
-
     private final IAM iam;
     private final Professors professors;
     private final Faculties faculties;
@@ -108,7 +105,6 @@ public final class ProfessorsEndpoints {
     }
 
     private Response execute(final Operation operation) {
-        professors.configure(Map.of("dburl", dbUrl));
         try {
             iam.validate("registrar");
             return operation.run()

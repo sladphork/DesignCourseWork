@@ -1,0 +1,10 @@
+quarkus:
+  http:
+    port: 8082
+    test-port: 18080
+  log:
+    level: DEBUG
+
+wc:
+  datasource:
+    url: http://localhost:1969

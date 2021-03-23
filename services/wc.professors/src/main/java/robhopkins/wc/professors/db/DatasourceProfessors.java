@@ -1,40 +1,38 @@
 package robhopkins.wc.professors.db;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import org.jboss.logmanager.LogManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import robhopkins.wc.common.datasource.*;
 import robhopkins.wc.professors.Professor;
 import robhopkins.wc.professors.ProfessorBuilder;
 import robhopkins.wc.professors.Professors;
 import robhopkins.wc.professors.domain.ObjectId;
 import robhopkins.wc.professors.exception.ProfessorNotFoundException;
+import robhopkins.wc.professors.exception.ServerException;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public final class DatasourceProfessors implements Professors {
-    private final DatasourceRequest request;
-    public DatasourceProfessors(final DatasourceRequest request) {
-        this.request = request;
+
+    private final DatasourceAction action;
+
+    public DatasourceProfessors(final DatasourceAction action) {
+        this.action = action;
     }
 
     @Override
-    public void configure(final Map<String, Object> properties) {
-        RestAssured.baseURI = (String) properties.get("dburl");
-    }
-
-    @Override
-    public Professor get(final ObjectId id) throws ProfessorNotFoundException {
-        final JSONObject request = new JSONObject()
-            .put("namespace", "professors")
-            .put("options", queryOptions("id", id))
-            .put("type", "QUERY");
-
-        final Response response = execute(request);
-        final String professors = response.asString();
+    public Professor get(final ObjectId id) throws ProfessorNotFoundException, ServerException {
+        final DatasourceResponse response = execute(
+            QueryRequestBuilder.newBuilder()
+                .withNamespace("professors")
+                .forTable("professors")
+                .where("id", id)
+        );
+        final String professors = response.body();
         final JSONArray result = new JSONArray(professors);
         if (result.length() > 0) {
             return mapFromDB(result.get(0));
@@ -43,30 +41,17 @@ public final class DatasourceProfessors implements Professors {
     }
 
     @Override
-    public Collection<Professor> getAll() {
-        final JSONObject request = new JSONObject()
-            .put("namespace", "professors")
-            .put("options", queryOptions(null, null))
-            .put("type", "QUERY");
-
-        final Response response = execute(request);
-        final String professors = response.asString();
+    public Collection<Professor> getAll() throws ServerException {
+        final DatasourceResponse response = execute(
+            QueryRequestBuilder.newBuilder()
+                .withNamespace("professors")
+                .forTable("professors")
+        );
+        final String professors = response.body();
         final JSONArray result = new JSONArray(professors);
         return StreamSupport.stream(result.spliterator(), false)
             .map(this::mapFromDB)
             .collect(Collectors.toList());
-    }
-
-    private JSONObject queryOptions(final String field, final Object value) {
-        final JSONObject options = new JSONObject()
-            .put("table", "professors");
-        if (Objects.nonNull(field)) {
-            final JSONObject where = new JSONObject()
-                .put("field", field)
-                .put("value", value.toString());
-            options.put("where", where);
-        }
-        return options;
     }
 
     private Professor mapFromDB(final Object val) {
@@ -81,156 +66,61 @@ public final class DatasourceProfessors implements Professors {
     }
 
     @Override
-    public Professor add(final Professor professor) {
-        final JSONObject request = new JSONObject()
-            .put("namespace", "professors")
-            .put("options", options(professor))
-            .put("type", "INSERT");
-
-        final Response response = execute(request);
+    public Professor add(final Professor professor) throws ServerException {
+        final DatasourceResponse response = execute(
+            InsertRequestBuilder.newBuilder()
+            .withNamespace("professors")
+            .forTable("professors")
+            .withValues(DMLPopulator.forAdd(professor).toMap())
+        );
         LogManager.getLogManager().getLogger("DatasourceProfessors")
-            .info("\nAdded professor with response: " + response.asString());
+            .info("\nAdded professor with response: " + response.body());
         return professor;
     }
 
-    private Object options(final Professor professor) {
-        return new JSONObject()
-            .put("table", "professors")
-            .put("values", new JsonPopulator(professor)
-                .toMap());
-    }
-
     @Override
-    public Professor update(final Professor professor) throws ProfessorNotFoundException {
-        final Professor original = get(professor.id());
-        final JSONObject request = new JSONObject()
-            .put("namespace", "professors")
-            .put("options", updateOptions(original, professor))
-            .put("type", "UPDATE");
-
-        final Response response = execute(request);
+    public Professor update(final Professor professor) throws ProfessorNotFoundException, ServerException {
+        final DatasourceResponse response = execute(
+            UpdateRequestBuilder.newBuilder()
+                .withNamespace("professors")
+                .forTable("professors")
+                .forId("id", professor.id())
+                .withValues(DMLPopulator.forUpdate(professor, setTests(get(professor.id()))).toMap())
+        );
         LogManager.getLogManager().getLogger("DatasourceProfessors")
-            .info("\nAdded professor with response: " + response.asString());
+            .info("\nAdded professor with response: " + response.body());
         return get(professor.id());
     }
 
-    private Object updateOptions(final Professor original, final Professor professor) {
-        return new JSONObject()
-            .put("table", "professors")
-            .put("id", new JSONObject().put("id", original.id().toString()))
-            .put("values", new UpdatePopulator(
-                new JsonPopulator(original).toMap(), professor).toMap()
-            );
+    private Map<String, Predicate<Object>> setTests(final Professor professor) {
+        final Map<String, Object> original = DMLPopulator.forProfessor(professor).toMap();
+        return Map.of(
+            "first_name", updatePredicate("first_name", original),
+            "last_name", updatePredicate("last_name", original),
+            "department_id", updatePredicate("department_id", original)
+        );
+    }
+
+    private Predicate<Object> updatePredicate(final String name, final Map<String, Object> map) {
+        return value -> {
+            final Object oldValue = map.get(name);
+            return (!Objects.toString(value, "").isBlank()
+                && !Objects.equals(oldValue, value));
+        };
     }
 
     @Override
-    public void delete(final ObjectId id) {
+    public void delete(final ObjectId id) throws ServerException {
         // We're not going to check if prof exists, we don't really care.
-        final JSONObject request = new JSONObject()
-            .put("namespace", "professors")
-            .put("options", deleteOptions(id))
-            .put("type", "DELETE");
-
-        execute(request);
+        execute(
+            DeleteRequestBuilder.newBuilder()
+                .withNamespace("professors")
+                .forTable("professors")
+                .where("id", id)
+        );
     }
 
-    private Object deleteOptions(final ObjectId professorId) {
-        return new JSONObject()
-            .put("table", "professors")
-            .put("id", new JSONObject().put("id", professorId.toString()));
-    }
-
-    private Response execute(final Object body) {
-        return request.execute(body);
-    }
-
-    // TODO: This is just get us up-and-running.
-    //  Make factory or something to encapsulates the common code.
-    private static final class JsonPopulator implements Professor.ProfessorPopulator {
-
-        private final Map<String, Object> json;
-        private final Professor professor;
-
-        JsonPopulator(final Professor professor) {
-            json = new LinkedHashMap<>();
-            this.professor = professor;
-        }
-
-        @Override
-        public void firstName(final String value) {
-            json.put("first_name", value);
-        }
-
-        @Override
-        public void lastName(final String value) {
-            json.put("last_name", value);
-        }
-
-        @Override
-        public void id(final ObjectId id) {
-            json.put("id", id.toString());
-        }
-
-        @Override
-        public void departmentId(final ObjectId id) {
-            // Temporary until we populate faculty
-            json.put("department_id", Optional.ofNullable(id).map(ObjectId::toString).orElse(""));
-        }
-
-        @Override
-        public void email(final String value) {
-            json.put("email", value);
-        }
-
-        Map<String, Object> toMap() {
-            professor.populate(this);
-            return json;
-        }
-    }
-
-    private static final class UpdatePopulator implements Professor.ProfessorPopulator {
-
-        private final Map<String, Object> original;
-        private final Professor professor;
-        UpdatePopulator(final Map<String, Object> original, final Professor professor) {
-            this.original = original;
-            this.professor = professor;
-        }
-        @Override
-        public void firstName(final String value) {
-            set("first_name", value);
-        }
-
-        @Override
-        public void lastName(final String value) {
-            set("last_name", value);
-        }
-
-        @Override
-        public void id(final ObjectId id) {
-
-        }
-
-        @Override
-        public void departmentId(final ObjectId id) {
-            set("department_id", id);
-        }
-
-        @Override
-        public void email(final String value) {
-
-        }
-
-        Map<String, Object> toMap() {
-            professor.populate(this);
-            return original;
-        }
-
-        private void set(final String name, final Object value) {
-            final Object oldValue = original.get(name);
-            if (!Objects.toString(value, "").isBlank() && !Objects.equals(oldValue, value)) {
-                original.put(name, value.toString());
-            }
-        }
+    private DatasourceResponse execute(final DatasourceRequestBuilder builder) throws ServerException {
+        return action.execute(builder);
     }
 }

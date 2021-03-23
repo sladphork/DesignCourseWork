@@ -23,7 +23,7 @@ public final class InMemIAM implements IAM, ContainerRequestFilter {
     private static final String AUTH_PATTERN = "Bearer (.*)";
 
     @Override
-    public void filter(ContainerRequestContext ctx) throws IOException {
+    public void filter(final ContainerRequestContext ctx) throws IOException {
         context().put("token", token(ctx));
     }
 

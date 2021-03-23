@@ -1,11 +1,11 @@
 package robhopkins.wc.professors.db;
 
-import io.restassured.response.Response;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import robhopkins.wc.common.datasource.DatasourceResponse;
 import robhopkins.wc.professors.Professor;
 import robhopkins.wc.professors.domain.ObjectId;
 import robhopkins.wc.professors.request.UpdateProfessor;
@@ -21,18 +21,17 @@ final class DatasourceProfessorsTest {
 
     @Test
     void updateShouldSendCorrectValues() throws Exception {
-        final DatasourceRequestSpy request = new DatasourceRequestSpy(
+        final UpdateActionSpy action = new UpdateActionSpy(
             professorResponse(),
             updateResponse(),
             professorResponse()
         );
-        final DatasourceProfessors professors = new DatasourceProfessors(request);
+        final DatasourceProfessors professors = new DatasourceProfessors(action);
         final Professor toUpdate = professorToUpdate("Updated", "LastName", "45678");
 
         final Professor updated = professors.update(toUpdate);
         assertThat(updated, notNullValue());
-        final JSONObject updatePayload = request.updatePayload();
-        assertThat(updatePayload, isExpectedUpdate());
+        assertThat(action.payload(), isExpectedUpdate());
 
     }
 
@@ -45,7 +44,7 @@ final class DatasourceProfessorsTest {
                 return "professors".equals(json.getString("namespace"))
                     && "UPDATE".equals(json.getString("type"))
                     && "professors".equals(options.getString("table"))
-                    && "12345".equals(options.getJSONObject("id").getString("id"))
+                    && "12345".equals(String.valueOf(options.getJSONObject("id").get("id")))
                     && matchesValues(options.getJSONObject("values"));
             }
 
@@ -53,9 +52,8 @@ final class DatasourceProfessorsTest {
                 return "Updated".equals(values.getString("first_name"))
                     && "LastName".equals(values.getString("last_name"))
                     && "45678".equals(values.getString("department_id"))
-                    // TODO: Right now we set these, but going forward can probably remove them.
-                    && "12345".equals(values.getString("id"))
-                    && "first.last@wc.edu".equals(values.getString("email"));
+                    && !values.has("id")
+                    && !values.has("email");
             }
 
             @Override
@@ -77,9 +75,9 @@ final class DatasourceProfessorsTest {
         return UpdateProfessor.from(ObjectId.from("12345"), json).toProfessor();
     }
 
-    private Response professorResponse() {
-        final Response response = mock(Response.class);
-        when(response.asString()).thenReturn(toJSON(
+    private DatasourceResponse professorResponse() {
+        final DatasourceResponse response = mock(DatasourceResponse.class);
+        when(response.body()).thenReturn(toJSON(
             Map.of(
                 "ID", "12345",
                 "FIRST_NAME", "First",
@@ -91,42 +89,13 @@ final class DatasourceProfessorsTest {
         return response;
     }
 
-    private Response updateResponse() {
-        final Response response = mock(Response.class);
-        when(response.asString()).thenReturn("{\"result\": \"Success\"}");
+    private DatasourceResponse updateResponse() {
+        final DatasourceResponse response = mock(DatasourceResponse.class);
+        when(response.body()).thenReturn("{\"result\": \"Success\"}");
         return response;
     }
 
     private String toJSON(final Map<String, Object> values) {
         return "[" + (new JSONObject(values).toString(2)) + "]";
-    }
-
-
-    private static final class DatasourceRequestSpy implements DatasourceRequest {
-
-        private final Response[] responses;
-
-        private JSONObject updatePayload;
-        private int current;
-        DatasourceRequestSpy(final Response... responses) {
-            this.responses = responses;
-        }
-
-        @Override
-        public Response execute(final Object body) {
-            if (updatePayload(body)) {
-                this.updatePayload = (JSONObject) body;
-            }
-            return responses[current++];
-        }
-
-        private boolean updatePayload(final Object body) {
-            final JSONObject payload = (JSONObject) body;
-            return "UPDATE".equals(payload.getString("type"));
-        }
-
-        JSONObject updatePayload() {
-            return updatePayload;
-        }
     }
 }
