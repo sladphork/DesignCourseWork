@@ -36,3 +36,5 @@ jobs:
         java-version: 1.11
     - name: Build Professors with Maven
       run: mvn -B package --file services/wc.professors/pom.xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
