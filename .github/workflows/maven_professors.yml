@@ -20,7 +20,9 @@ jobs:
         with:
           java-version: 1.11
       - name: Build Common with Maven
-        run: mvn -B install --file services/common/pom.xml
+        run: mvn --batch-mode deploy --file services/common/pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build_professors:
     needs: build_common
