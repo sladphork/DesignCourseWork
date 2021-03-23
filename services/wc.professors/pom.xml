@@ -34,7 +34,7 @@
         <dependency>
             <groupId>robhopkins</groupId>
             <artifactId>wc.common</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
