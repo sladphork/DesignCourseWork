@@ -8,7 +8,7 @@ public final class ForbiddenException extends IAMException {
         super("User is forbidden from performing this operation.");
     }
     @Override
-    protected int status() {
+    public int status() {
         return HttpResponseStatus.FORBIDDEN.code();
     }
 }

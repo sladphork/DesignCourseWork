@@ -9,7 +9,7 @@ public class InvalidBodyException extends ProfessorException {
     }
 
     @Override
-    protected int status() {
+    public int status() {
         return 400;
     }
 }

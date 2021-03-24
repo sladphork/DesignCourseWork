@@ -4,6 +4,7 @@ import io.quarkus.test.Mock;
 import robhopkins.wc.professors.domain.ObjectId;
 import robhopkins.wc.professors.exception.ProfessorException;
 import robhopkins.wc.professors.exception.ProfessorNotFoundException;
+import robhopkins.wc.professors.exception.ServerException;
 
 import java.util.Collection;
 import java.util.Map;
@@ -32,12 +33,7 @@ public final class MockProfessors implements Professors {
     }
 
     @Override
-    public void configure(final Map<String, Object> properties) {
-
-    }
-
-    @Override
-    public Professor get(final ObjectId id) throws ProfessorNotFoundException {
+    public Professor get(final ObjectId id) throws ProfessorNotFoundException, ServerException {
         if (Objects.nonNull(exception)) {
             throw (ProfessorNotFoundException) exception;
         }
@@ -45,22 +41,22 @@ public final class MockProfessors implements Professors {
     }
 
     @Override
-    public Professor add(final Professor professor) {
+    public Professor add(final Professor professor) throws ServerException {
         return target.add(professor);
     }
 
     @Override
-    public Professor update(final Professor professor) throws ProfessorNotFoundException {
+    public Professor update(final Professor professor) throws ProfessorNotFoundException, ServerException {
         return target.update(professor);
     }
 
     @Override
-    public void delete(final ObjectId id) {
+    public void delete(final ObjectId id) throws ServerException {
         target.delete(id);
     }
 
     @Override
-    public Collection<Professor> getAll() {
+    public Collection<Professor> getAll() throws ServerException {
         return target.getAll();
     }
 }

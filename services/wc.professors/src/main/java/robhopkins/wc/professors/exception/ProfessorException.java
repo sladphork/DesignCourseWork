@@ -17,5 +17,5 @@ public abstract class ProfessorException extends Exception {
             .build();
     }
 
-    protected abstract int status();
+    public abstract int status();
 }

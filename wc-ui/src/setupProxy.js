@@ -29,4 +29,11 @@ module.exports = function(app) {
         "changeOrigin": true}
       )
   );
+
+      app.use(
+        '/students', createProxyMiddleware({
+          "target": "http://wc-students:8080",
+          "changeOrigin": true}
+        )
+    );
 }

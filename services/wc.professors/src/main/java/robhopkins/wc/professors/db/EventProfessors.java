@@ -10,6 +10,7 @@ import robhopkins.wc.professors.Professor;
 import robhopkins.wc.professors.Professors;
 import robhopkins.wc.professors.domain.ObjectId;
 import robhopkins.wc.professors.exception.ProfessorNotFoundException;
+import robhopkins.wc.professors.exception.ServerException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -24,24 +25,24 @@ public class EventProfessors implements Professors {
         this.target = target;
     }
     @Override
-    public Professor get(final ObjectId id) throws ProfessorNotFoundException {
+    public Professor get(final ObjectId id) throws ProfessorNotFoundException, ServerException {
         return target.get(id);
     }
 
     @Override
-    public Collection<Professor> getAll() {
+    public Collection<Professor> getAll() throws ServerException {
         return target.getAll();
     }
 
     @Override
-    public Professor add(final Professor professor) {
+    public Professor add(final Professor professor) throws ServerException {
         final Professor added = target.add(professor);
         send(added);
         return added;
     }
 
     @Override
-    public Professor update(final Professor professor) throws ProfessorNotFoundException {
+    public Professor update(final Professor professor) throws ProfessorNotFoundException, ServerException {
         final Professor updated = target.update(professor);
         // Send the event to mq;
         return updated;
@@ -53,15 +54,10 @@ public class EventProfessors implements Professors {
             final Professor toDelete = get(id);
             target.delete(id);
             // Send the professor or just the id to mq
-        } catch (ProfessorNotFoundException e) {
+        } catch (ProfessorNotFoundException | ServerException e) {
             // We'll just log this.
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void configure(final Map<String, Object> properties) {
-        target.configure(properties);
     }
 
     private void send(final Professor professor) {

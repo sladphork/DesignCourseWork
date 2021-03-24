@@ -8,7 +8,7 @@ public class UnauthenticatedException extends IAMException {
     }
 
     @Override
-    protected int status() {
+    public int status() {
         return HttpResponseStatus.UNAUTHORIZED.code();
     }
 }

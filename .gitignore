@@ -3,6 +3,8 @@
 /target
 /target/**
 **/data
-/ui/node_modules
-/ui/build
+/wc-ui/node_modules
+/wc-ui/build
+/.docker
 .DS_Store
+

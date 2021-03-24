@@ -1,6 +1,8 @@
 package robhopkins.wc.professors.request;
 
 import org.json.JSONObject;
+import robhopkins.wc.common.request.Payload;
+import robhopkins.wc.common.request.exception.RequestException;
 import robhopkins.wc.professors.Professor;
 import robhopkins.wc.professors.ProfessorBuilder;
 import robhopkins.wc.professors.domain.ObjectId;
@@ -9,6 +11,19 @@ import robhopkins.wc.professors.exception.ProfessorException;
 public final class UpdateProfessor {
 
     public static UpdateProfessor from(final ObjectId id, final String json) throws ProfessorException {
+        try {
+            return create(id, json);
+        } catch (RequestException e) {
+            throw new ProfessorException(e.getMessage()) {
+                @Override
+                public int status() {
+                    return e.status();
+                }
+            };
+        }
+    }
+
+    private static UpdateProfessor create(final ObjectId id, final String json) throws RequestException {
         final UpdateProfessor professor = Payload.newPayload(UpdateProfessor.class)
             .withJSON(new JSONObject(json))
             .withSchema("firstName:false", "lastName:false", "departmentId:false")

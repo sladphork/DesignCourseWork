@@ -10,7 +10,7 @@ public class DepartmentNotFoundException extends ProfessorException {
     }
 
     @Override
-    protected int status() {
+    public int status() {
         return 404;
     }
 }

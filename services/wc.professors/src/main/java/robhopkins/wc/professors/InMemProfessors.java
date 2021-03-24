@@ -2,6 +2,7 @@ package robhopkins.wc.professors;
 
 import robhopkins.wc.professors.domain.ObjectId;
 import robhopkins.wc.professors.exception.ProfessorNotFoundException;
+import robhopkins.wc.professors.exception.ServerException;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,18 +18,13 @@ final class InMemProfessors implements Professors {
     }
 
     @Override
-    public void configure(final Map<String, Object> properties) {
-
-    }
-
-    @Override
-    public Professor get(final ObjectId id) throws ProfessorNotFoundException {
+    public Professor get(final ObjectId id) throws ProfessorNotFoundException, ServerException {
         return Optional.ofNullable(data.get(id))
             .orElseThrow(() -> new ProfessorNotFoundException(id));
     }
 
     @Override
-    public Professor add(final Professor professor) {
+    public Professor add(final Professor professor) throws ServerException {
         final Professor added = ProfessorBuilder.newBuilder(professor)
             .withId(ObjectId.random())
             .build();
@@ -37,7 +33,7 @@ final class InMemProfessors implements Professors {
     }
 
     @Override
-    public Professor update(final Professor professor) throws ProfessorNotFoundException {
+    public Professor update(final Professor professor) throws ProfessorNotFoundException, ServerException {
         final UpdateOperation operation =
             new UpdateOperation(
                 get(professor.id()
@@ -49,13 +45,13 @@ final class InMemProfessors implements Professors {
     }
 
     @Override
-    public void delete(final ObjectId id) {
+    public void delete(final ObjectId id) throws ServerException {
         // The delete will always work, even if the professor is already gone.
         data.remove(id);
     }
 
     @Override
-    public Collection<Professor> getAll() {
+    public Collection<Professor> getAll() throws ServerException {
         return Collections.unmodifiableCollection(data.values());
     }
 
