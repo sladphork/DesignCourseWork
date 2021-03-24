@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./Registrar.css";
 import { Tab, Tabs } from 'react-bootstrap';
 import Professors from "./professors/Professors";
+import Students from "./students/Students";
 import Faculties from "./faculties/Faculties";
 import { getProfessors, addProfessor, updateProfessor, deleteProfessor } from "../../libs/ProfessorRequests";
-import { getFaculties} from "../../libs/FacultyRequests";
+import { getStudents, addStudent, updateStudent, deleteStudent } from "../../libs/StudentRequests";
+import { getFaculties } from "../../libs/FacultyRequests";
 
 export default function Registrar() {
 
@@ -12,10 +14,14 @@ export default function Registrar() {
   const [professors, setProfessors] = useState([]);
   const [faculties, setFaculties] = useState([]);
   const [departments, setDepartments] = useState({});
+  const [students, setStudents] = useState([]);
 
   function load() {
     getProfessors(
         data => setProfessors(data)
+    );
+    getStudents(
+        data => setStudents(data)
     );
 
     getFaculties(
@@ -57,6 +63,27 @@ export default function Registrar() {
     );
   }
 
+  function doAddStudent(newStudent) {
+    addStudent(
+        newStudent,
+        () => load()
+    );
+  }
+
+  function doUpdateStudent(updatedStudent) {
+    updateStudent(
+      updatedStudent,
+      () => load()
+    );
+  }
+
+  function doDeleteStudent(deletedStudent) {
+    deleteStudent(
+      deletedStudent,
+      () => load()
+    );
+  }
+
   useEffect(() => {
     load();
   }, []);
@@ -79,6 +106,15 @@ export default function Registrar() {
             doAdd={doAdd}
             doUpdate={doUpdate}
             doDelete={doDelete}
+          />
+        </Tab>
+        <Tab eventKey="students" title="Students">
+          <Students
+            students={students}
+            faculties={faculties}
+            doAdd={doAddStudent}
+            doUpdate={doUpdateStudent}
+            doDelete={doDeleteStudent}
           />
         </Tab>
         <Tab eventKey="faculties" title="Faculties">
